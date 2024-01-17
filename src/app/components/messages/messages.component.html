@@ -1,0 +1,10 @@
+<div class="message" *ngIf="messagesService.message">
+    <div class="message-header">
+        <h2>Feito!</h2>
+        <button class="clear" (click)="messagesService.clear()">
+            <!-- a partir de agora só coloca o nome do icone, n precisa mais do prefixo 'fa' -->
+            <fa-icon icon="times"></fa-icon>
+        </button>
+    </div>
+    <p>{{messagesService.message}}</p>
+</div>

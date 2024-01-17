@@ -1,0 +1,17 @@
+<div class="home-container">
+    <h1> Veja o que estão compartilhando</h1>
+    <div *ngIf="moments.length > 0; else noMoments">
+    <div class="moments-container">
+        <div class="moment" *ngFor="let moment of moments">
+            <img src="{{baseApiUrl}}uploads/{{moment.image}}" 
+            alt="{{moment.image}}"
+            />
+            <h3>{{moment.title}}</h3>
+            <p class="date">Em: {{ moment.created_at }}</p>
+        </div>
+    </div>
+</div>
+<ng-template #noMoments>
+    <h1>Não há momentos cadastrados!</h1>
+</ng-template>
+</div>
