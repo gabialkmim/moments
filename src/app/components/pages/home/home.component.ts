@@ -9,29 +9,31 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent  implements OnInit{
+export class HomeComponent implements OnInit {
 
-  allMoments: Moment[] = []
-  moments: Moment[] = []
-  baseApiUrl = environment.baseApiUrl
-
+  allMoments: Moment[] = [];
+  moments: Moment[] = [];
+  baseApiUrl = environment.baseApiUrl;
+  faSearch = faSearch;
 
   constructor(private momentService: MomentService) { }
 
   ngOnInit(): void {
-    this.momentService.getMoments().subscribe((items) => {
-  
-      console.log(items);
-      
-      this.moments = items.data.map(item => {
-        item.created_at = new Date(item.created_at!).toLocaleDateString( 'pt-BR' );
-        return item;
-      }); 
-
-      console.log(this.moments);
-
+    this.momentService.getMoments().subscribe((response) => {
+      if (response && response.data && Array.isArray(response.data)) {
+        this.moments = response.data.map(item => {
+          if (item.created_at) {
+            item.created_at = new Date(item.created_at).toLocaleDateString('pt-BR');
+          }
+          return item;
+        });
+        console.log(this.moments);
+      } else {
+        console.error('Dados inesperados recebidos:', response);
+      }
+    }, (error) => {
+      console.error('Erro ao buscar momentos:', error);
     });
-  
   }
 
 }

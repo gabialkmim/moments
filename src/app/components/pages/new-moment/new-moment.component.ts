@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Moment } from 'src/app/services/Moment';
 import { MomentService } from 'src/app/services/moment.service';
 import { MessagesService } from 'src/app/services/messages.service';
@@ -9,38 +9,40 @@ import { Router } from '@angular/router';
   templateUrl: './new-moment.component.html',
   styleUrls: ['./new-moment.component.css']
 })
-export class NewMomentComponent {
+export class NewMomentComponent implements OnInit {
   btnText = 'Compartilhar!';
 
   constructor(
     private momentService: MomentService,
-    private messagesService:MessagesService,
+    private messagesService: MessagesService,
     private router: Router
-    ) {}
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  async createHandler(moment: Moment){
-    const formData = new FormData()
+  async createHandler(moment: Moment) {
+    // console.log('Dados do momento:', moment);
 
-    formData.append("title", moment.title)
-    formData.append("description", moment.descripion)
- 
+    const formData = new FormData();
 
-    if(moment.image) {
-      formData.append("image", moment.image);
-    }
+    formData.append('title', moment.title);
+    formData.append('description', moment.description);
+    formData.append('image', moment.image);
 
-    await this.momentService.createMoment(formData).subscribe;
+    this.momentService.createMoment(formData).subscribe({
+      next: () => {
+        this.messagesService.add('Momento adicionado com sucesso!');
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar o Momento', error);
+      }
+    });
     
-    this.messagesService.add("Momento adicionado com sucesso!");
-
-    this.router.navigate(['/'])
-
-    //redirect
   }
-
-
 
 }
+
+  
+
+  

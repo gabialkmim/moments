@@ -3,7 +3,7 @@
     <div *ngIf="moments.length > 0; else noMoments">
     <div class="moments-container">
         <div class="moment" *ngFor="let moment of moments">
-            <img src="{{baseApiUrl}}uploads/{{moment.image}}" 
+            <img src="{{moment.image}}" 
             alt="{{moment.image}}"
             />
             <h3>{{moment.title}}</h3>

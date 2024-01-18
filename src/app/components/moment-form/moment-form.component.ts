@@ -34,12 +34,28 @@ export class MomentFormComponent implements OnInit {
 
   }
 
-  onFileSlected(event: any) {
+  async onFileSlected(event: any) {
 
     const file: File = event.target.files[0]
+    const imageBase64 = await this.imageToBase64(file);
+    this.momentForm.patchValue({image: imageBase64})
 
-    this.momentForm.patchValue({image: file})
+  }
 
+  private async imageToBase64(imageFile: File): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onerror = reject;
+
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        const base64Image = base64String.split(',')[1];
+        resolve(base64Image);
+      };
+
+      reader.readAsDataURL(imageFile);
+    });
   }
 
   submit() {
